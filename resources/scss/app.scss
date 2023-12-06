@@ -1,0 +1,32 @@
+@import '~bootstrap/scss/bootstrap';
+
+@import './partials/sidebar';
+header{
+    height:60px;
+}
+
+.main-wrapper{
+    height: calc(100vh - 60px);
+}
+
+aside{
+    width: 250px;
+    height: 100%;
+    ul{
+        list-style: none;
+        padding-top: 20px;
+        padding-left: 0;
+
+        a{
+            display: inline-block;
+            width: 100%;
+            padding: 10px;
+            color: white;
+            text-decoration: none;
+            &.active{
+                background-color: rgb(95, 93, 93);
+            }
+        }
+    }
+
+}
