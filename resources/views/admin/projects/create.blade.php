@@ -8,7 +8,7 @@
 
     <h1>crea la tua versione</h1>
 
-    <form action="{{ route('admin.projects.store') }}" method="POST">
+    <form action="{{ route('admin.projects.store') }}" method="POST"  enctype="multipart/form-data">
         {{-- elemnto da inserire i  tutti i form di Laravel per un conctrollo di sicurezza  --}}
         @csrf
 
@@ -47,6 +47,21 @@
                     <label class="btn btn-outline-primary" for="technology{{$tecnology->id}}">{{$tecnology->name}}</label>
               </div>
             @endforeach
+
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Immagine</label>
+            <input
+              id="image"
+              class="form-control @error('image') is-invalid @enderror"
+              name="image"
+              type="file"
+              onchange="showImage(event)"
+              value="{{ old('image') }}"
+            >
+            @error('image')
+                <p class="text-danger">{{ $image }}</p>
+            @enderror
 
         </div>
         <button type="submit" class="btn btn-primary">Invia</button>

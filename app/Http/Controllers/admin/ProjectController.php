@@ -9,6 +9,7 @@ use App\Models\Project;
 use App\Models\Tecnology;
 use Illuminate\Http\Request;
 use App\Models\Type;
+use Illuminate\Support\Facades\Storage;
 class ProjectController extends Controller
 {
     /**
@@ -46,8 +47,16 @@ class ProjectController extends Controller
         $new_project = new Project();
 
         $form_data['slug'] = Helper::generateSlug($form_data['name'], Project::class);
+
+        if(array_key_exists('image', $form_data)) {
+
+            $form_data['name_img'] = $request->file('image')->getClientOriginalName();
+            $form_data['image'] = Storage::put('uploads', $form_data['image']);
+        }
         $new_project->fill($form_data);
         // lo salvo nel db
+
+
 
         $new_project->save();
 
@@ -63,9 +72,9 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Project $project)
     {
-        //
+        return view('admin.projects.show', compact('project'));
     }
 
     /**
@@ -100,6 +109,14 @@ class ProjectController extends Controller
             $form_data['slug'] = Helper::generateSlug($form_data['name'], Project::class);
         }
 
+        if(array_key_exists('image', $form_data)){
+            if($project->image){
+                Storage::disk('public')->delete($project->image);
+            }
+            $form_data['name_img'] = $request->file('image')->getClientOriginalName();
+            $form_data['image'] = Storage::put('uploads', $form_data['image']);
+        }
+
         $project->update($form_data);
 
         return redirect()->route('admin.projects.index',$project);
@@ -115,6 +132,6 @@ class ProjectController extends Controller
     {
         $project->delete();
 
-        return redirect()->route('admin.projects.index')->with('deleted', "La project $project->name è stata eliminata correttamente");
+        return redirect()->route('admin.projects.index')->with('deleted', "Il progetto $project->name è stato eliminato correttamente");
     }
 }

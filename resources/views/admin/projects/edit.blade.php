@@ -18,7 +18,7 @@
 
     <h1>Modifica il progetto</h1>
 
-    <form action="{{ route('admin.projects.update', $project) }}" method="POST">
+    <form action="{{ route('admin.projects.update', $project) }}" method="POST"  enctype="multipart/form-data">
 
         @csrf
         @method('PUT')
@@ -64,8 +64,24 @@
                     <label class="btn btn-outline-primary" for="technology{{$tecnology->id}}">{{$tecnology->name}}</label>
 
                 @endforeach
+            </div>
         </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Immagine</label>
+            <input
+              id="image"
+              class="form-control @error('image') is-invalid @enderror"
+              name="image"
+              type="file"
+              onchange="showImage(event)"
+              value="{{ old('image', $project?->image) }}"
+            >
+
+
+            <img id="thumb" width="150" onerror="this.src='/img/placeholder.webp'"  src="{{ asset('storage/' . $project?->image) }}" />
+
         </div>
+
         <button type="submit" class="btn btn-primary">Invia</button>
         <button type="reset" class="btn btn-secondary">Annulla</button>
 
